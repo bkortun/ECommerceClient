@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Create_Product } from 'src/app/contracts/create_product';
 import { AlertifyService, MessageType, Position } from 'src/app/services/admin/alertify.service';
+import { FileUploadOption } from 'src/app/services/common/file-upload/file-upload.component';
 import { ProductService } from 'src/app/services/common/models/product.service';
 
 @Component({
@@ -16,6 +17,13 @@ export class CreateComponent implements OnInit {
   }
 
   @Output() createdProduct:EventEmitter<Create_Product>=new EventEmitter<Create_Product>();
+  @Output() fileUploadOptions:Partial<FileUploadOption>={
+    controller:"products",
+    action:"upload",
+    explanation:"Choose files...",
+    isAdminPage:true,
+    accept:".png, .jpg, .jpeg"
+  }
 
   create(name: HTMLInputElement, stock: HTMLInputElement, price: HTMLInputElement) {
     const create_product: Create_Product = new Create_Product();
