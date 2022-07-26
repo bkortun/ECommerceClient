@@ -18,7 +18,7 @@ export class FileUploadComponent {
 
   @Input() options: Partial<FileUploadOption>
 
-  constructor(private httpClientService: HttpClientService, private alertifyService:AlertifyService,private dialog:MatDialog,private dialogService:DialogService) { }
+  constructor(private httpClientService: HttpClientService, private alertifyService: AlertifyService, private dialog: MatDialog, private dialogService: DialogService) { }
 
   public selectedFiles(files: NgxFileDropEntry[]) {
 
@@ -32,34 +32,33 @@ export class FileUploadComponent {
 
 
     this.dialogService.openDialog({
-      componentType:FileUploadDialogComponent,
-      data:FileUploadState.Yes,
-      afterClosed:()=>{
-        ()=>{
-          this.httpClientService.post({
-            controller: this.options.controller,
-            action: this.options.action,
-            queryString:this.options.queryString,
-            headers:new HttpHeaders({"responseType":"blob"})
-          }, fileData).subscribe(data=>{
-            if (this.options.isAdminPage) {
-              this.alertifyService.message("Files uploaded by successfully",{
-                dismissOthers:true,
-                messageType:MessageType.Success,
-                position:Position.TopRight
-              })
-            }else{}
+      componentType: FileUploadDialogComponent,
+      data: FileUploadState.Yes,
+      afterClosed: () => {
+        this.httpClientService.post({
+          controller: this.options.controller,
+          action: this.options.action,
+          queryString: this.options.queryString,
+          headers: new HttpHeaders({ "responseType": "blob" })
+        }, fileData).subscribe(data => {
+          console.log(fileData);
+          if (this.options.isAdminPage) {
+            this.alertifyService.message("Files uploaded by successfully", {
+              dismissOthers: true,
+              messageType: MessageType.Success,
+              position: Position.TopRight
+            })
+          } else { }
 
-          },(errorResponse:HttpErrorResponse)=>{
-            if (this.options.isAdminPage) {
-              this.alertifyService.message("Occurred unexpected error",{
-                dismissOthers:true,
-                messageType:MessageType.Error,
-                position:Position.TopRight
-              })
-            }else{}
-          })
-        }
+        }, (errorResponse: HttpErrorResponse) => {
+          if (this.options.isAdminPage) {
+            this.alertifyService.message("Occurred unexpected error", {
+              dismissOthers: true,
+              messageType: MessageType.Error,
+              position: Position.TopRight
+            })
+          } else { }
+        })
       }
     });
   }
@@ -76,5 +75,5 @@ export class FileUploadOption {
   queryString?: string
   explanation?: string
   accept?: string
-  isAdminPage:boolean=true
+  isAdminPage: boolean = true
 }
